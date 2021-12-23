@@ -1,6 +1,6 @@
 # Embedded-System 
 
-[Day 1](# Day 1)
+[Day 1](#Day-1)
 
 ## Day 1
 
