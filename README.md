@@ -20,8 +20,8 @@ Kernel
 
 ![image](https://user-images.githubusercontent.com/29851990/147268871-dec6741d-c3ff-47d0-8b30-c7c7e50eaeb8.png)
 
-System bus : 시스템들을 연결하는 애들
-master : 통신을 주는 시스템
+System bus : 시스템들을 연결하는 애들<br>
+master : 통신을 주는 시스템<br>
 slave : 통신을 받는 시스템(메모리는 보통 slave임)
 
 interrupt : 뭔가 오면 알림을 주면 그때수행
@@ -52,82 +52,69 @@ Symbolic Link : 원본 파일의 이름을 가리키는 링크로 원본 파일�
 Hard Link : 원본 파일과 동일한 Inode 를 가지며 원본 파일이 삭제되더라도 링크 파일을 여전히 사용 가능하다.
 위치 정보를 가지고 있는 이름을 여러 개 생성하는 개념이다. 그렇기 때문에 한 파일을 지워도 하드에서 해당 위치를 찾아갈 수 있다.
 
-Pathname
- 절대경로 : root에서부터 내 경로까지 쭉 나열한 것
- 상대경로 : 지금 나를 기준으로 다른 파일을 찾는 것 
+절대경로 : root에서부터 내 경로까지 쭉 나열한 것
 
-UserID
- 유저 하나당 아이디가 부여된다
+상대경로 : 지금 나를 기준으로 다른 파일을 찾는 것 
 
-GroupID 
- 어떤 유저들이 속해있는 집단
- 모든 유저는 반드시 하나이상의 그룹에 속해있어야한다.
+UserID : 유저 하나당 아이디가 부여된다
 
-Root 
- The userID is 0
+GroupID : 어떤 유저들이 속해있는 집단, 모든 유저는 반드시 하나이상의 그룹에 속해있어야한다.
 
-Shell
- 커널과 유저를 이어주는 인터페이스
+Root : The userID is 0
+
+Shell : 커널과 유저를 이어주는 인터페이스
 
 <br><br><br><br>
 ### Day 3
 
-Process : 객체와 같은 존재 / 동적이다
+Process : 객체와 같은 존재 / 동적이다<br>
 Program : 클래스와 같은 존재 / 정적이다
 
-Multiprocessing : 프로세서를 여러개 두어서 수행시키는 것 -> 물리적으로 cpu가 여러개있다.
+Multiprocessing : 프로세서를 여러개 두어서 수행시키는 것 -> 물리적으로 cpu가 여러개있다.<br>
 Multitasking : Time-Shared -> processing들이 동시에 수행되는 것처럼 보이게 하는 것
+
+<br>
 
 ![image](https://user-images.githubusercontent.com/29851990/147269703-c16b860a-49ea-4afe-a0aa-65761289b22f.png)
 
-text : 코드의 구조 ex) 명령어, 어셈블러, 기계어
-data : 원래필요한 변수, 전역변수, 정적변수 ex) static, 각종 상수
-heap : 프로그램을 수행하면서 만들어지는 변수, 동적변수 ex) new, malloc...
+text : 코드의 구조 ex) 명령어, 어셈블러, 기계어<br>
+data : 원래필요한 변수, 전역변수, 정적변수 ex) static, 각종 상수<br>
+heap : 프로그램을 수행하면서 만들어지는 변수, 동적변수 ex) new, malloc...<br>
 stack : 함수호출 또는 일시적으로 생성되었다가 사라지는 파라미터, 매개변수, 리턴 벨류, 지역변수 등..
 
-text, data : 사이즈가 안변함
+text, data : 사이즈가 안변함<br>
 stack, heap : 사이즈가 유동적임
 
-ex)
-int x;       ------>   data영역    
-int y = 15;  ------>   data영역
-
-int main(int args, char* argvc){
-	int value;  ---->   stack 영역
-	int i;;      ---->   stack 영역
-	
-	value = (int*)malloc(sizeof(int)*s) ---->   heap 영역
-}
+<br>
 
 ![image](https://user-images.githubusercontent.com/29851990/147269787-e7fdd008-df0f-4f7a-9935-f333fbe0146e.png)
 
-New : 프로세스가 만들어질 때
-Ready : 수행할 준비가 되어있지만 다른 프로세스가 cpu를 잡아먹기 때문에 기다리는 것
-Waiting : 특정한 상황을 기다리고 있고, 입력이 되면 ready로 바뀐다.
-Running : 프로세스가 동작하는 것
-Terminated : 프로세스가 다 끝난상태 
+New : 프로세스가 만들어질 때<br>
+Ready : 수행할 준비가 되어있지만 다른 프로세스가 cpu를 잡아먹기 때문에 기다리는 것<br>
+Waiting : 특정한 상황을 기다리고 있고, 입력이 되면 ready로 바뀐다.<br>
+Running : 프로세스가 동작하는 것<br>
+Terminated : 프로세스가 다 끝난상태
 
 ** ready, waiting : cpu를 먹고있는 상태가 아님
 
+<br>
+
 ![image](https://user-images.githubusercontent.com/29851990/147269800-5a0b67c4-3aa3-4821-be3b-347543f6dafa.png)
 
-process state : 위의것
-process number : 프로세스를 가리키는 번호
-program counter : PC
-register : 필요한 레지스터가 있으면 저장
+process number : 프로세스를 가리키는 번호<br>
+register : 필요한 레지스터가 있으면 저장<br>
 list of open files : 프로세스에서 파일을 open하는데 그 리스트
 
-![image](https://user-images.githubusercontent.com/29851990/147269818-3be7264b-1225-4ac4-9e41-ca97647f8c46.png)
-
-하나의 프로세스가 cpu를 다 썻다. 그러면 다른 애를 찾으러가는데 그 과정을 Process Scheduling 이라한다.
+Process Scheduling
+ - 하나의 프로세스가 cpu를 다 썻을 때, 다른 프로세스를 찾으러가는과정
 
 ![image](https://user-images.githubusercontent.com/29851990/147269857-9fdeb0c1-d4e0-41af-8b5c-737980cac791.png)
 
 Context Switch는 Switch(interrupt, system call)를 하게 되면 실행하고있던 Process P0를 끝내는게 아니라 잠시 멈춘다. 그러므로 P0가 쓰던 register 값(pc)을 저장을 하고, Process P1의 저장되었었던 state를 Load하는 과정이다.
 
-Context Switch은 하드웨어 단에서는 꽤 시간이 걸리는 작업이다.
-그러므로 Context Switch을 자주하면 시간이 비례해서 걸린다.
-Time-Sharing을 사용하기 때문에 Context Switch을 하긴한다.
+Context Switch은 하드웨어 단에서는 꽤 시간이 걸리는 작업이다.<br>
+그러므로 Context Switch을 자주하면 시간이 비례해서 걸린다.<br>
+Time-Sharing을 사용하기 때문에 Context Switch을 하긴한다.<br>
 
 그렇다고 Context Switch 하는 시간을 늘려버리면 cpu단에서는 눈에 보이지 않지만 I/O단에서는 엄청 답답해진다. (responsible)
 
@@ -173,7 +160,7 @@ wait() : 프로세스가 끝나면 Terminate 상태로 가도 잠시 대기한�
 
 ![image](https://user-images.githubusercontent.com/29851990/147269954-4e0fb04f-f308-44dc-a5e6-96d37f6c6a21.png)
 <br><br>
-Process Tree
+Process Tree<br>
 ![image](https://user-images.githubusercontent.com/29851990/147269977-13f9879e-3d42-476b-b5f3-ac820c57c0dc.png)
 
 init : PID 1 / 모든 프로세스의 부모 프로세스
