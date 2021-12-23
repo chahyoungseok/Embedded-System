@@ -211,7 +211,6 @@ wait
  - 나를 생성했던 부모 프로세스가 내 상태를 확인할 때까지(자식 프로세스의 리턴 값), 대기한다.
  - 부모프로세스에서 wait()을 걸어으면, 계속 리턴값을 기다린다.
 
-![image](https://user-images.githubusercontent.com/29851990/147269954-4e0fb04f-f308-44dc-a5e6-96d37f6c6a21.png)
 <br><br>
 
 ### Process Termination
