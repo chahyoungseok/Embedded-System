@@ -32,7 +32,9 @@ OS
  - 하드웨어를 컨트롤, 관리하는 소프트웨어
 <br><br>
 
-![image](https://user-images.githubusercontent.com/29851990/147268871-dec6741d-c3ff-47d0-8b30-c7c7e50eaeb8.png)
+### Computer System Organization
+
+![6](https://user-images.githubusercontent.com/29851990/147278450-b29ec27a-37e5-485a-986e-25efde0cef90.PNG)
 <br>
 System bus : 시스템들을 연결하는 애들<br>
 master : 통신을 주는 시스템<br>
@@ -40,18 +42,20 @@ slave : 통신을 받는 시스템(메모리는 보통 slave임)<br>
 interrupt : 뭔가 오면 알림을 주면 그때수행
 <br><br>
 
-![image](https://user-images.githubusercontent.com/29851990/147268894-fed0adea-105d-47aa-9296-d14d5f4c57b9.png)
-<br>
+
+<br><br>
+### Definition of Computer System Components
+
 Hard real-time system
  - 잠깐 잘못돼도 큰일나는 것
  - ex) 원자로, 항공기류
 
 Soft real-time system
  - Hard real-time system 보다는 괜찮은 것
-<br><br>
 
-![image](https://user-images.githubusercontent.com/29851990/147268917-0f6c9712-095e-498f-998a-18a71bc31dc3.png)
-<br>
+<br><br>
+### Computer System
+
 Computer architecture
  - ISA + Memory model, register
 
