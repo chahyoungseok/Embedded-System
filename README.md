@@ -104,7 +104,7 @@ Multitasking
 
 <br><br>
 ### Memory Layout
-![image](https://user-images.githubusercontent.com/29851990/147269703-c16b860a-49ea-4afe-a0aa-65761289b22f.png)
+![1](https://user-images.githubusercontent.com/29851990/147277591-dc6a3a67-b653-4599-8067-8e6515b04342.PNG)
 <br>
 text (사이즈가 변하지않는다.)
  - 코드의 구조 ex) 명령어, 어셈블러, 기계어
@@ -120,7 +120,7 @@ stack (사이즈가 유동적이다.)
 
 <br><br>
 ### Process States
-![1](https://user-images.githubusercontent.com/29851990/147277526-de03aa23-bb9d-41d7-94e9-0e2063956289.PNG)
+![2](https://user-images.githubusercontent.com/29851990/147277602-4ef62842-e559-44ac-8f69-985500479d5f.PNG)
 <br>
 New
  - 프로세스가 만들어질 때
