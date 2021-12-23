@@ -574,6 +574,7 @@ x : 실행권한
 동기화 핵심 : 하나의 프로세스가 Shared Data를 조작하고 있을때는 다른애는 쓰면 안된다.
 
 <br>
+
 Producer - Consumer (Revisited)
  - 2개의 협업하는 프로세스가 있는데 하나는 생산만하고, 하나는 소비만하는 P-C관계가 있다. 
  - 그러려면 Buffer라는 공간이 있어야한다. Buffer의 크기는 지정이되는데 그러는순간 Buffer에 맞춰 제약된 데이터를 생산 소비해야한다.
@@ -581,7 +582,8 @@ Producer - Consumer (Revisited)
  - 하지만 counter를 증가, 감소 시키는 과정에서도 위와같은 Data Inconsistency case가 나온다.
  - 따라서 공유하는 데이터가 있다면 Race Condition문제는 생긴다.
 
-<br>
+
+
 Kernel
  - 모든 프로세스가 접근한다. 
  - ex) fork를 할 때, Process ID를 받아오는데 이 ID의 저장소는 Kernel이다. 
@@ -596,6 +598,7 @@ Shared Data를 조작하는 영역을 Critical Section이라고 부른다.<br>
 entry section을 어떻게 만들어야 한 번에 하나의 프로세스만 들어갈 수 있냐?
 
 <br>
+
 Critical Section Problem
  - Mutual exclusion : 하나의 프로세스가 쓸때는 다른 프로세스는 사용 x
  - Progress : CS가 비어있는데 들어가고 싶은 프로세스가 있으면 반드시 그 중에 하나는 CS에 입장을 해야한다.
@@ -611,3 +614,52 @@ Peterson's Solution
  - flag는 나 CS 사용하고 싶다는 의견을 제시하는 역할
  - 본인 프로세스 입장에서 본인이 실행하는 것 : i
  - 본인 프로세스 입장에서 상대가 실행하는 것 : j
+
+<br><br>
+
+Peterson's이 제대로 된 해결책인지 아까 3가지의 문제를 가져와보자
+ - Mutual exclusion : flag는 둘다 true가 될 수 있지만 turn은 0 아니면 1이다. 그러므로 둘중 하나는 수행이 된다.
+ - Progress : CS가 비어있는데 사용하고 싶은 프로세스가 있다면 사용할 수 있냐에 대해서 사용을 하지않으면 flag를 내리기 때문에 사용하고 싶은 프로세스가 있다면 사용할 수 있다.
+ - Bound waiting : turn = j처럼 왜 양보를 할까 => 두 프로세스간에 성능 차이가 많이 난다면 성능이 좋은 쪽만 수행하는 상황이 나올 수 있기 때문이다. 성능좋은 내가 상대방이 flag를 체크하기 전에 다시 flag를 바꿔버려서 CS를 수행한다. (Starvation 해결)
+
+<br><br>
+
+Out-of-order Execution
+ - 리소스가 남는다는 가정하에 예전은 위의 예시처럼 상관없는 순서여도 먼저거를 안하면 뒤에것을 수행안했는데 요즘 컴퓨터는 상관없는 순서라면 먼저 수행한다.
+ - 하지만 이 방식을 사용하게되면 순서가 바뀌어 다른 결과가 나올 수 있다는 문제가 생긴다.
+
+Memory Barrier
+ - memory_barrier()를 하면 그 위아래로는 코드를 교환하진 않는다. 그러면 어느정도 코드가 보장이 된다.
+
+Atomic Instructions 
+ - 내가 이 명령어를 수행할 때 다른 애들이 이명령어를 사용하지 못한다를 하드웨어단에서 보장한다.
+ - ex) test-and-set, compare-and-swap
+ - 성능저하가 심하다.
+
+Mutex Locks
+ - Synchronization을 위한 기능 
+ - 이것은 보통 compare-and-swap으로 구현되고, 한줄 적으면 아까의 과정을 다 해준다. acquire lock, release lock
+
+Semaphores
+ - Mutex를 쓰면 하나만 접근 가능해서 내부에 리소스가 2개 이상 있을 때는 Semaphores를 사용한다.
+ - Semaphores는 내부의 리소스를 카운팅해서 0이되면 못 들어가고, wait(), signal()로 아까의 알고리즘 기능을 수행한다.
+
+spin lock
+ - 모든 lock에서는 CS에 들어가지 못하면 무한루프가 도는데 이런 상황을 busy waiting이라고 부른다.
+ - busy waiting 상태에서의 lock
+
+Semaphore Implementation without busy waiting
+ - 처음에 들어가서 lock을 못 잡으면 sleep을 한다. 그러면 cpu를 먹지 않는 wait queue에 들어가있는다.
+ - 그리고 lock을 잡을 수 있는 상황이되면 다 쓴 사람이 wakeup을 호출하여 ready queue로 옮긴다. 
+ - 근데 여기서 wakeup을 관련된 모든 사람에게 호출하므로 관련된 애들은 다시한번 잡아본다.
+ - 따라서 내가 sleep 후 wakeup을 받았다고해서 무조건적으로 lock을 풀 수 있는 것은 아니다.
+ - 여기서 또 문제는 sleep하고 wakeup을 하면 Context Switing을 하므로 단점도 있다.
+ - CS를 기다리는 시간보다 Context Switing을 하는 시간이 길 경우 spinlock을 쓰는게 더욱 효율적이다.
+
+Monitors
+ - Synchronized를 쓰면 컴파일러나 OS가 알아서 CS에 2개가 못 들어가게 해놓는다.
+ - 하지만 모든 구간을 Monitors을 하면 성능이 안 좋아진다.
+ - 따라서 CS를 최대한 작게 하면서 문제가 없게 하는 것이 관건이다.
+
+<br><br><br><br>
+### Day 7
