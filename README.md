@@ -289,3 +289,101 @@ ftruncate(shm_fd, 4096)
 
 <br><br><br><br>
 ## Day 4
+
+### Pipe
+
+Ordinary pipes
+ - 프로세스 생성할 때, 미리 꽂아 놓는 형식
+ - Producer - Consumer구성에서 빈번하게 사용
+ - unidirectional이다.
+ - 보통 파이프를 uni로 2개 만들고, 그럼 양방향이 된다.
+
+Named Pipe
+ - Ordinary Pipe의 한계점은 부모자식관계가 아니면 쓸 수가 없다.
+ - 범용적인 파이프가 필요해 만든 것이 Named Pipe
+ - 하지만 현업에서는 오류도 많이 발생하여 잘 쓰지않는다.
+
+<br><br>
+### Communications in Clinent-Server
+
+loopback 만드는 이유 : 인풋과 아웃풋을 분리하고, 인터페이스를 통일하고, 그 사이에 생기는 문제들은 커널에서 중재해주기 위해서
+<br><br>
+
+<br><br>
+### 깜짝 문제
+
+Questions : LINE A에서 출력되는 내용을 설명하라.<br>
+Answer : 출력하는 부분은 부모프로세스에게만 있으므로 답은 5이다.
+<br>
+![33](https://user-images.githubusercontent.com/29851990/147279254-573fc4d8-1b77-4ace-bd1a-bc3b2ef10fee.PNG)
+
+<br><br>
+
+Questions : 최초의 부모 프로세스를 포함하여 사진에 표시된 프로그램에 의해 몇 개의 프로세스가 생성되는가?<br>
+Answer : 한번 fork()를 하면 프로세스가 2개가 된다. 2^3 이므로 답은 8개이다.
+<br>
+![34](https://user-images.githubusercontent.com/29851990/147279514-97e86fdb-7fa1-4837-b2c9-fc775640f874.PNG)
+
+<br><br>
+### Thread
+
+![35](https://user-images.githubusercontent.com/29851990/147279989-83957ad2-a5b6-493e-953e-3f874363a1f1.PNG)
+<br>
+
+프로세스 내에서 자신만의 Content를 갖는 단위
+하나의 프로세스는 하나이상의 Thread를 갖는다.
+
+프로세스를 복사하면 저 위의 code, data, register etc.. 다 복사된다.
+굳이 다 복사할 필요가 없어서 프로세스의 일정부분만 복사되도록 하는 별도의 Control 단위를 Thread라고 한다.
+
+Thread는 복사될 때 PC, register, stack을 복사한다.
+PC를 복사하므로 같은 프로그램 내에서도 각각 다른 위치를 동시에 수행할 수 있는 기능을 한다.
+
+하나의 프로그램에 다수의 Thread는 code 공간을 공유한다. 따라서 하나의 Thread에서 문제가 발생하면 OS가 code공간에 할당된 resource를 회수하게 되므로 모든 Thread들이 멈추게 된다.
+
+Benefits
+ - 응답 속도가 빠르다.
+ - 프로세스를 복사하는 것과 다르게 메모리공간을 덜 차지한다.
+ - 만드는데 걸리는 시간도 적다.
+ - Process보다 Thread가 Context Switching이 빠르다. -> 훨씬 더 멀티 테스킹에 적합하다.
+
+<br><br>
+### Multicore Programming
+
+현대에 쓰는 컴퓨터나 핸드폰은 Multi Core이다.
+Signal Core로 성능을 높이는데 한계가 있어서 Core 개수를 늘리자.
+
+Concurrency : 하나의 Task가 끝나지 않았는데 다른 Task를 수행할 수 있는 성질
+
+Parallelism : 코어가 여러 개 있어서 동시에 여러 Task를 수행하는 것.
+
+<br>
+Amdalhl's Law
+
+![images](https://user-images.githubusercontent.com/29851990/147280373-2fc76f9b-94d4-472b-86af-30c83f4ab82e.png)
+<br>
+p : 병렬화 할 수 있는 부분<br>
+s : 코어의 개수
+
+![image](https://user-images.githubusercontent.com/29851990/147280633-0eeac359-f6bf-4eb1-af12-eebaf83083ae.png) 
+
+해당 그림과 같이 병렬화 할 수 없는 부분이 많다면 코어의 개수가 많아져도 성능향상이 더딜 수 밖에 없다.<br>
+따라서 병렬화 할 수 있게 프로그램을 구성하는 것이 바람직하다.
+
+Types of Parallelism
+ - Data parallelism : 큰 데이터를 여러 코어들이 나눠서 계산하는 것.
+ - Task parallelism : 데이터를 공유하고, 각각 하는 일들이 다르다.
+
+<br><br>
+### Pthread
+
+Implicit Threading
+ - 멀티 코어, 멀티 쓰레딩의 시대가 오면서 알아서 쓰레드를 코드레벨로 쓸 수 있게 만들었다.
+ - 그치만 너무 외부에 노출시키지말고 내부에서 잘 처리하자.
+
+Thread Pools
+ - 쓰레드를 미리 만들어놓고 사용할 때 가져다 쓰고, 다 쓰면 가져다 놓는다. 그러면 생성시간을 단축한다.
+
+<br><br><br><br>
+## Day 5
+
