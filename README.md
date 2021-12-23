@@ -1,6 +1,8 @@
 # Embedded-System 
 
-### Day 1
+[Day 1](# Day 1)
+
+## Day 1
 
 임베디드 시스템이란?
  - 내장형 시스템
@@ -44,7 +46,7 @@ Instruction Set Architecture(ISA)
  - 명령어를 기준세운 것
 
 <br><br><br><br>
-### Day 2
+## Day 2
 
 Symbolic Link : 원본 파일의 이름을 가리키는 링크로 원본 파일이 삭제되면 사용 불가능하다.
 전혀 다른 파일이라도 가리키는 원본 파일 이름이 같으면 계속 사용 가능하다.
