@@ -457,12 +457,112 @@ waiting time
 <br><br>
 ### Scheduling Methods
 
-FCFS
+FCFS (First-Come, First-Served)
  - 먼저 온 애를 먼저 수행한다.
  - 이 방법에서 흔히 Convoy effect가 발생한다.
  - Convoy effect : 하나의 프로세스가 앞에서 막아버리면 뒤에 프로세스가 못하는 영향
 
-SJF
+SJF (Shortest-Job-First)
  - 제일 빨리 끝날만한(Burst time) 프로세스를 먼저 선택하는 것.
+ - 과거의 일을 가지고 예측해서 Shortest-Job-Frist를 한다.
  - 실제로는 Burst time을 알 수 있는 방법을 몰라서 못 쓰는 방법이다.
 
+SRTF (Shortest Remaining Time First)
+ - Shortest-Job-Frist을 기본으로 하는데 Preemptive이므로 새로운 프로세스가 도착하면 끼어들 수 있다.
+
+RR (Round Robin)
+ - time slice와 Preemtive 성질이 있다.
+ - 하나의 프로세스는 한 번에 일정한 시간이상(q)을 수행할 수 없다. 순서는 FCFS이다.
+ - q가 작으면 작을수록 좋아 보이지만 context swithing의 overhead가 더 발생한다. (Dispatch latency)
+
+Priority Scheduling
+ - 프로세스의 우선순위를 우선으로한다.
+ - Priority가 낮을수록 높은 것이다.
+ - 현실적으로 많이 쓰인다.
+
+<br><br>
+### Starvation
+
+Priority가 낮아서 영구로 돌아가는 프로세스 뒤로 걸려서 영구적으로 못 돌아가는 현상.<br>
+보통 Round Robin과 Priority를 조합한다. -> 먼저 Priority를 수행하고 우선순위가 겹치면 Round Robin
+
+Aging
+ - Priority를 아무리 낮게 놔두더라도 일정 시간마다 Priority를 계속 올려줘서 Starvation을 해결함.
+
+MultiLevel Queue
+ - Ready Queue가 Priority 별로 따로 있어서 Queue 안에서는 Round Robin
+ - 우선순위 : Real-time process -> kernel system process -> user interface process -> batch job process(user Disinteractive)
+ - Multi Level Queue는 Aging 방법이 안 들어감.
+
+<br><br>
+### Approaches to Multiple-Process Scheduling
+
+core가 n개가 있을 때, ready Queue를 공용으로 만들거나 개인용을 만드는 방법 2가지가 있다. (common ready / per-core run)<br>
+Load balancing : per-core run queues에서 하나의 core가 다 일을 끝내면 다른 코어에 남아있는 일을 줘야함.
+
+두 경우 모두 core와 프로세스간 선택에 있어서 고민할 것이 있다.
+
+![image](https://user-images.githubusercontent.com/29851990/147283339-5f4959c4-e29b-44bf-abcf-b99ab2320790.png)
+<br>
+cpu와 메모리 사이에 데이터 이동은 컴퓨터 입장에서는 오래 걸리는 일이다. 그래서 찾은 방안이 조그맣지만 빠른 곳에 메모리공간을 둔다(Cache).<br>
+ -> 많은 용량을 저장할 수 있는 공간은 싸지만 속도가 느리다.<br>
+ -> 적은 용량을 저장할 수 있는 공간은 비싸지만 속도가 빠르다.
+
+Context Switing Cost
+ - Core가 하나의 Process를 처음 수행하면 Cache는 비어있다. 
+ - 따라서 메모리에서는 자주 쓰이는 애들을 Cache에 채워놓는다. 
+ - 그렇게되면 작업을 엄청 빠르게 수행하는데 Process가 바뀌게 되면 앞의 작업을 다해야하므로 속도가 느려진다.
+
+위의 common ready는 Process하나 수행할 때마다 Context Switing Cost가 든다. per-core run과의 Load balancing을 비교를 해볼 수 있다.
+
+<br><br>
+### Simulaneous Multithreading
+
+Process와 Process는 완전히 남남이지만, Process내의 Thread끼리는 많은 부분을 공유하므로 Context Switing Cost가 많이 줄어든다. 
+
+S/W단에서 Multi Threading은 성능이 많이 좋아지지 않는다.<br>
+SMT는 Multi Threading을 H/W 단에서 하는데 실제로 성능이 많이 좋아진다.
+
+하나의 Thread가 I/O Burst나 다른 block에 걸렸을 때, 다른 Thread가 동작할 수 있게 H/W적으로 설계를 함
+
+OS입장에서는 저렇게 구성하면 Thread를 core로 인식한다.<br>
+-> 적어도 OS가 바라보는 입장에서는 멀티 스레딩과 멀티 코어는 같다.
+
+하지만 멀티 스레딩이라해서 성능이 무조건 좋은 것은 아니고 block당하는 일이 없다면 싱글 스레딩을 하는 것과 같으므로 별로 이득이 없다.
+
+<br><br>
+### Real-Time CPU Scheduling
+
+Soft
+ - 전화같이 사람이 인식하는 수준의 딜레이가 있어도 되는 것.
+
+Hard
+ - 딜레이가 거의 있으면 안 되는 것.
+
+Real-Time에서 말하는 필요한 시간
+ - 이벤트가 발생한 시점부터 그 이벤트를 처리할 때 까지 걸리는 시간
+
+Interrupt processing time
+ - 이벤트가 발생했으면 cpu에게 알려주는 시간
+
+Dispatch Latency
+ - 중요한 프로세스가 떠서 cpu를 위임하는 과정 ---> 보통은 Hard와 Soft Real time에 영향을 많이 줌
+
+real-time process execution
+ - 실제로 어떤 일을 하는데 걸리는 시간
+
+<br><br>
+### File Information (Permission)
+
+-/---/---/---<br>
+1 : 파일 Type<br>
+2~4 : 소유자(유저)<br>
+5~7 : 그룹<br>
+8~10 : 아무나<br>
+
+r : 읽기권한<br>
+w : 쓰기권한0<br>
+x : 실행권한
+
+<br><br><br><br>
+## Day 6
