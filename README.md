@@ -11,6 +11,12 @@
     <li><a href="#day-5">Day 5</a></li>
     <li><a href="#day-6">Day 6</a></li>
     <li><a href="#day-7">Day 7</a></li>
+    <li><a href="#day-8">Day 8</a></li>
+    <li><a href="#day-9">Day 9</a></li>
+    <li><a href="#day-10">Day 10</a></li>
+    <li><a href="#day-11">Day 11</a></li>
+    <li><a href="#day-12">Day 12</a></li>
+    <li><a href="#day-13">Day 13</a></li>
   </ol>
 </details>
 
@@ -682,7 +688,7 @@ deadlock은 아래 4가지조건이 만족해야 발생한다.
  - Circular wait(상호대기) : 내가 필요한 리소스는 상대가 갔고있는데 상대가 필요한 리소스는 나한테 있는 상황.
 
 <br><br>
-## Cycle
+### Cycle
 
 ![31](https://user-images.githubusercontent.com/29851990/147286625-184957d2-9277-444b-96d0-dd171d657f29.PNG)
 
@@ -691,7 +697,7 @@ cycle인지 no cycle이냐도 구분을한다.<br>
 no cycle이면 deadlock을 발생시키지 않고, 필요한 하나밖에 없는 리소스가 cycle에 포함되어있다면 deadlock이다.
 
 <br><br>
-## Deadlock Prevention
+### Deadlock Prevention
 
 Deadlock이 걸리지 않게 하기위해 예방대책
  - Mutual exclusion, Hold and wait는 기존에 필요성을 보았을 때 함부로 없앨 수 없다.
@@ -700,20 +706,20 @@ Deadlock이 걸리지 않게 하기위해 예방대책
  - 실제로 Deadlock Prevention은 구현 불가능하다.
 
 <br><br>
-## Deadlock Prevention
+### Deadlock Prevention
  - Thread가 내가 내일을 할 때 필요로 하는 최대의 리소스 개수(Maximum Needs)를 알고 있어야 한다는 전제조건이 있다.
  - ex) Banker's Algorithm
  - 하지만 Maximum Needs를 알고 있다는 가정이 불가능한 가정이다.
 
 <br><br>
-## Wait-for Graph
+### Wait-for Graph
  - deadlock을 허용하고 deadlock 생기면 거기서 문제를 해결하려는 것 
  - 연관된 애들을 다 죽인다.
  - 하나씩 뺀다. (빼보면서 cycle이 없어지는지 아닌지를 본다.)
  - Deadlock이 걸리면 뭐 하나 죽여야되긴 하니까 문제를 최소화해서 Preempt해라
 
 <br><br>
-## Current OS
+### Current OS
 
 우리 다 같이 이 문제를 잊고 생기지 않다고 생각하자.
 프로그래머가 잘 짜면 이런 문제 안 생겨 그러니 미루자!
