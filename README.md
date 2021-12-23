@@ -566,3 +566,48 @@ x : 실행권한
 
 <br><br><br><br>
 ## Day 6
+
+### Race Condition
+
+같은 데이터를 동시에 접근할 때는 막 허용하면 안된다.<br>
+해결책은 동기화(Synchronization)이다.<br>
+동기화 핵심 : 하나의 프로세스가 Shared Data를 조작하고 있을때는 다른애는 쓰면 안된다.
+
+<br>
+Producer - Consumer (Revisited)
+ - 2개의 협업하는 프로세스가 있는데 하나는 생산만하고, 하나는 소비만하는 P-C관계가 있다. 
+ - 그러려면 Buffer라는 공간이 있어야한다. Buffer의 크기는 지정이되는데 그러는순간 Buffer에 맞춰 제약된 데이터를 생산 소비해야한다.
+ - Buffer에는 counter를 두어 제어할 수 있다.
+ - 하지만 counter를 증가, 감소 시키는 과정에서도 위와같은 Data Inconsistency case가 나온다.
+ - 따라서 공유하는 데이터가 있다면 Race Condition문제는 생긴다.
+
+<br>
+Kernel
+ - 모든 프로세스가 접근한다. 
+ - ex) fork를 할 때, Process ID를 받아오는데 이 ID의 저장소는 Kernel이다. 
+ - 똑같은 Process ID를 가진 프로세스가 만들어질 수 도있다.
+
+<br><br>
+### Critical Section
+
+Shared Data를 조작하는 영역을 Critical Section이라고 부른다.<br>
+들어가는 부분 : entry section<br>
+나오는 부분 : exit section<br>
+entry section을 어떻게 만들어야 한 번에 하나의 프로세스만 들어갈 수 있냐?
+
+<br>
+Critical Section Problem
+ - Mutual exclusion : 하나의 프로세스가 쓸때는 다른 프로세스는 사용 x
+ - Progress : CS가 비어있는데 들어가고 싶은 프로세스가 있으면 반드시 그 중에 하나는 CS에 입장을 해야한다.
+ - Bounded waiting : CS에 들어가려고 문을 두드리면 반드시 일정한 시간, 일정한 순서안에 여기에 입장한다. (우선순위를 빼앗겨서 Starvation문제가 발생하는 것을 막는다.)
+
+<br><br>
+
+![31](https://user-images.githubusercontent.com/29851990/147284682-46cae3e0-dc4d-42a4-b869-fe91c898cb29.PNG)
+<br>
+Peterson's Solution
+ - P0와 P1이 있을 때 저 flag와 turn을 공유한다.
+ - turn은 누가 CS에 들어가게 할 것이냐에 대한 우선권을 주는 역할
+ - flag는 나 CS 사용하고 싶다는 의견을 제시하는 역할
+ - 본인 프로세스 입장에서 본인이 실행하는 것 : i
+ - 본인 프로세스 입장에서 상대가 실행하는 것 : j
