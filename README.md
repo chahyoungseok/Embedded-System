@@ -237,8 +237,7 @@ IPC
     - 특정 공간에 데이터를 쓴 다음 알람을 줘서 데이터가 필요한 	애들이 가져가는 방식 (보통은 계속 데이터를 기다리고 있다.)
     - 프로세스가 여러개 물렸을 때는 장점이다.
 
-![12](https://user-images.githubusercontent.com/29851990/147277817-82b712ce-7abf-4546-81f8-3a4af0050f68.PNG)
-
+![22](https://user-images.githubusercontent.com/29851990/147277975-a5c9308c-07ce-4c19-a3e1-ca89b6d081ee.PNG)
 
 <br><br>
 ### Producer-Consumer
