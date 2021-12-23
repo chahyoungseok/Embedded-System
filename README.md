@@ -157,7 +157,7 @@ list of open files
  - 하나의 프로세스가 cpu를 다 썻을 때, 다른 프로세스를 찾으러가는과정
  - 프로세스가 바뀔때 마다 Context Switch를 하게된다.
 
-![image](https://user-images.githubusercontent.com/29851990/147269857-9fdeb0c1-d4e0-41af-8b5c-737980cac791.png)
+![23](https://user-images.githubusercontent.com/29851990/147277928-29d02082-1f18-4dfd-8dc7-bf376b7111c8.PNG)
 
 Context Switch는 Switch(interrupt, system call)를 하게 되면 실행하고있던 Process P0를 끝내는게 아니라 잠시 멈춘다.<br>
 그러므로 P0가 쓰던 register 값(pc)을 저장을 하고, Process P1의 저장되었었던 state를 Load하는 과정이다.
@@ -236,6 +236,9 @@ IPC
    : 일반적으로 많이 씀.
     - 특정 공간에 데이터를 쓴 다음 알람을 줘서 데이터가 필요한 	애들이 가져가는 방식 (보통은 계속 데이터를 기다리고 있다.)
     - 프로세스가 여러개 물렸을 때는 장점이다.
+
+![12](https://user-images.githubusercontent.com/29851990/147277817-82b712ce-7abf-4546-81f8-3a4af0050f68.PNG)
+
 
 <br><br>
 ### Producer-Consumer
