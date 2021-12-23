@@ -387,3 +387,82 @@ Thread Pools
 <br><br><br><br>
 ## Day 5
 
+### CPU Scheduling
+
+어떠한 cpu가 어떤 프로세스를 쓸지 결정하는 것이 cpu Scheduling이다.
+
+Cpu Burst 
+ - 실제 프로세스가 cpu를 사용하는 시간
+
+I/O Burst 
+ - waiting하는 기간
+
+ex)실제로 파일을 실행하는 시간은 Cpu Burst이고, cpu가 HDD에서 파일을 달라고 요청해서 HDD에서 cpu로 파일이 가는 시간은 I/O Burst가 된다.
+
+<br><br>
+### Clock Cycle
+
+일정한 시간마다 하나하나의 계단식 블럭의 트리거 역할을 하는 소자를 clock이라고 부른다. (clock은 일정한 주기를 갖고 동작한다.)<br>
+따라서 블럭안의 명령어는 clock에 동기화가 돼서 동작한다.<br>
+주기하나당 명령어를 수행하므로 주기가 짧아지면 짧아질수록 성능이 좋아진다.<br>
+clock cycle시간과 Frequency는 반비례다.<br>
+따라서 Frequency가 높을수록 성능이 좋아진다.
+
+Frequency 
+ - 1초동안 clock이 얼마나 튕기나 (Hz라고 부른다.)
+
+<br><br>
+### CPU Scheduler
+
+ready queue에 다수의 프로세스가 있다면 그것을 어떤 것 먼저 running state로 가져다 놓을 것이냐가 CPU Scheduler가 하는 일.<br>
+CPU Scheduling이 동작하는 4가지
+ 1. running -> waiting
+ 2. running -> ready
+ 3. waiting -> ready
+ 4. Terminates
+
+<br><br> 
+### Preemptive Scheduling
+
+Nonpreemtive
+ - 한번 프로세스가 cpu를 장악하면 그 프로세스가 cpu를 안 쓴다는 신호를 보내기 전까지 아무도 cpu를 뺏어오지 못한다.
+ - 뺏는 경우 : 스스로 놓거나 or 시간이 다 되었거나
+
+Preemtive
+ - 수행하는 중간에도 외부에서 강제로 ready queue로 보낼 수 있다. 
+
+Dispatcher
+ - Context Switing 할 때, 프로세스의 정보를 저장했다가 다른 프로세스 상태를 읽는 동작을 해주는 애
+ - Context Switing을 너무 자주하면 프로세스가 실행하는 시간보다 Dispather가 수행하는 시간이 더 길어진다. 그것을 조절하는게 Dispatch latency이다. 
+
+<br><br>
+### Scheduling Criteria
+
+Throughput
+ - 전체 프로세스가 끝나는데 걸리는 시간
+
+CPU utilization
+ - CPU가 얼마나 놀지 않고 있었냐
+
+Turnaround time
+ - 각각의 프로세스들이 시작하면서부터 끝날 때까지 걸리는 시간의 평균
+
+Response time
+ - 사람과 상호작용을 안 해도 되는 일은 그냥 빨리 끝내기만하면 된다. 
+ - 하지만 사람과 상호작용을 통해 해야하는일은 위의 것이 중요한 게 아니라 빨리 response를 주는 것이 더 중요하다.
+
+waiting time 
+ - 각 프로세스마다 평균 waiting time들 지표로 삼는 방법.
+
+<br><br>
+### Scheduling Methods
+
+FCFS
+ - 먼저 온 애를 먼저 수행한다.
+ - 이 방법에서 흔히 Convoy effect가 발생한다.
+ - Convoy effect : 하나의 프로세스가 앞에서 막아버리면 뒤에 프로세스가 못하는 영향
+
+SJF
+ - 제일 빨리 끝날만한(Burst time) 프로세스를 먼저 선택하는 것.
+ - 실제로는 Burst time을 알 수 있는 방법을 몰라서 못 쓰는 방법이다.
+
