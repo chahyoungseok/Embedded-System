@@ -663,3 +663,62 @@ Monitors
 
 <br><br><br><br>
 ### Day 7
+
+### Resource-allocation graph
+
+![30](https://user-images.githubusercontent.com/29851990/147286384-3ddf902c-c6e1-4f7a-a1f4-d6df2752fa64.PNG)
+
+네모가 리소스고, 동그라미가 스레드임<br>
+리소스에서 스레드로 화살표 : 해당 리소스는 해당 스레드에 할당됬다.<br>
+스레드에서 리소스로 화살표 : 해당 스레드는 해당 리소스가 필요하다.
+
+<br><br>
+### Necessary Conditions
+
+deadlock은 아래 4가지조건이 만족해야 발생한다.
+ - Mutual exclusion(상호배제) : 하나의 스레드가 어떤 리소스를 장악하면 다른 스레드는 그 리소스를 장악할 수 없다. 
+ - Hold and wait : 내가 한번 리소스를 잡았으면 하던 일이 끝나기 전까진 안 놓고 다른 리소스를 잡을때까지 기다린다.
+ - No preemption : 스레드가 어떤 리소스를 잡고있으면 다른 스레드는 뺏어갈 수 없다.
+ - Circular wait(상호대기) : 내가 필요한 리소스는 상대가 갔고있는데 상대가 필요한 리소스는 나한테 있는 상황.
+
+<br><br>
+## Cycle
+
+![31](https://user-images.githubusercontent.com/29851990/147286625-184957d2-9277-444b-96d0-dd171d657f29.PNG)
+
+cycle인지 no cycle이냐도 구분을한다.<br>
+예를들면 저 R3가 T1을 가르키면 cycle이 된다.<br>
+no cycle이면 deadlock을 발생시키지 않고, 필요한 하나밖에 없는 리소스가 cycle에 포함되어있다면 deadlock이다.
+
+<br><br>
+## Deadlock Prevention
+
+Deadlock이 걸리지 않게 하기위해 예방대책
+ - Mutual exclusion, Hold and wait는 기존에 필요성을 보았을 때 함부로 없앨 수 없다.
+ - No preemption 또한 기존에 필요성을 보았을 때 함부로 없앨 수 없다.
+ - Circular wait는 구현방법도 어렵고 버든이 많이 존재한다.
+ - 실제로 Deadlock Prevention은 구현 불가능하다.
+
+<br><br>
+## Deadlock Prevention
+ - Thread가 내가 내일을 할 때 필요로 하는 최대의 리소스 개수(Maximum Needs)를 알고 있어야 한다는 전제조건이 있다.
+ - ex) Banker's Algorithm
+ - 하지만 Maximum Needs를 알고 있다는 가정이 불가능한 가정이다.
+
+<br><br>
+## Wait-for Graph
+ - deadlock을 허용하고 deadlock 생기면 거기서 문제를 해결하려는 것 
+ - 연관된 애들을 다 죽인다.
+ - 하나씩 뺀다. (빼보면서 cycle이 없어지는지 아닌지를 본다.)
+ - Deadlock이 걸리면 뭐 하나 죽여야되긴 하니까 문제를 최소화해서 Preempt해라
+
+<br><br>
+## Current OS
+
+우리 다 같이 이 문제를 잊고 생기지 않다고 생각하자.
+프로그래머가 잘 짜면 이런 문제 안 생겨 그러니 미루자!
+
+괜찮은 방법이 많지만 성능을 너무 많이 떨어뜨리므로 구현 불가능하다.
+
+<br><br><br><br>
+## Day 8
