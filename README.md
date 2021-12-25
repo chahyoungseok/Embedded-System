@@ -367,7 +367,7 @@ Parallelism : 코어가 여러 개 있어서 동시에 여러 Task를 수행하�
 <br>
 Amdalhl's Law
 
-//사진
+![37](https://user-images.githubusercontent.com/29851990/147375729-4df5aa24-9ea5-4282-a8eb-53405141b788.PNG)
 <br>
 p : 병렬화 할 수 있는 부분<br>
 s : 코어의 개수
