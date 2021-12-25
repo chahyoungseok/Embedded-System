@@ -152,7 +152,7 @@ cf
 
 <br><br>
 ### PCB
-//사진
+![26](https://user-images.githubusercontent.com/29851990/147375316-e3aab159-8160-4448-af89-737fcac0c153.png)
 <br>
 process number
  - 프로세스를 가리키는 번호
