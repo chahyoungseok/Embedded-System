@@ -563,9 +563,9 @@ real-time process execution
 
 -/---/---/---<br>
 1 : 파일 Type<br>
-2~4 : 소유자(유저)<br>
-5~7 : 그룹<br>
-8~10 : 아무나<br>
+2 to 4 : 소유자(유저)<br>
+5 to 7 : 그룹<br>
+8 to 10 : 아무나<br>
 
 r : 읽기권한<br>
 w : 쓰기권한<br>
@@ -673,7 +673,7 @@ Monitors
 
 ### Resource-allocation graph
 
-//사진
+![32](https://user-images.githubusercontent.com/29851990/147375913-0ac4789f-ac83-4e82-8ac5-d033df615646.PNG)
 
 네모가 리소스고, 동그라미가 스레드임<br>
 리소스에서 스레드로 화살표 : 해당 리소스는 해당 스레드에 할당됬다.<br>
