@@ -168,7 +168,7 @@ list of open files
  - 하나의 프로세스가 cpu를 다 썻을 때, 다른 프로세스를 찾으러가는과정
  - 프로세스가 바뀔때 마다 Context Switch를 하게된다.
 
-//사진
+![27](https://user-images.githubusercontent.com/29851990/147375434-2116edfe-61b1-477f-b424-f25fcf6c465e.PNG)
 
 Context Switch는 Switch(interrupt, system call)를 하게 되면 실행하고있던 Process P0를 끝내는게 아니라 잠시 멈춘다.<br>
 그러므로 P0가 쓰던 register 값(pc)을 저장을 하고, Process P1의 저장되었었던 state를 Load하는 과정이다.
