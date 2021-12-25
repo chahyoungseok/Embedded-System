@@ -509,7 +509,7 @@ Load balancing : per-core run queues에서 하나의 core가 다 일을 끝내�
 
 두 경우 모두 core와 프로세스간 선택에 있어서 고민할 것이 있다.
 
-//사진
+![23](https://user-images.githubusercontent.com/29851990/147375786-a5319cfb-61d0-4328-b062-008c21bf62a8.png)
 <br>
 cpu와 메모리 사이에 데이터 이동은 컴퓨터 입장에서는 오래 걸리는 일이다. 그래서 찾은 방안이 조그맣지만 빠른 곳에 메모리공간을 둔다(Cache).<br>
  -> 많은 용량을 저장할 수 있는 공간은 싸지만 속도가 느리다.<br>
