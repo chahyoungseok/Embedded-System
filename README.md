@@ -14,9 +14,7 @@
     <li><a href="#day-8">Day 8</a></li>
     <li><a href="#day-9">Day 9</a></li>
     <li><a href="#day-10">Day 10</a></li>
-    <li><a href="#day-11">Day 11</a></li>
-    <li><a href="#day-12">Day 12</a></li>
-    <li><a href="#day-13">Day 13</a></li>
+    <li>Linux-mini-Shell(임베디드 프로젝트 링크) : https://github.com/chahyoungseok/Linux-mini-Shell</li>
   </ol>
 </details>
 
@@ -1048,17 +1046,17 @@ Copy on Write
 valid bit가 0인 애들은 왜 TLB에 존재할까?
  - Context Switching할 때, 4byte짜리 number들을 갈아치우는 것 보다 1bit짜리 valid bit을 0으로 만드는게 쉽다.
 
-<br>
-
-![35](https://user-images.githubusercontent.com/29851990/147377666-027a08ec-e64d-4a7c-8a50-19aa6b640abc.png)
-<br>
-Thrashing
+<br><br>
+### Thrashing
  - OS는 프로그램을 10개 수행하면 동시에 시작시키지 않는다.
  - CPU의 utilization을 보고, 못한다 싶으면 어떠한 queue에 넣어놓는다.
  - 저 그래프의 x,y는 비례관계를 갖는다.
  - A,B의 중요 페이지 수가 4개라고 할 때, 총 올려놓을 수 있는 페이지 수를 6개라고 하자. A 혼자 올려놓고 쓰면 60%정도의 utilization이 나왔다고 하면 B가 들어오는 순간 B도 4개의 페이지를 올려놔야하므로 A가 차지하고있던 2개의 페이지공간을 줬다 뺐다 핑퐁을 치게된다.
  - 그러면서 계속 page fault가 나서 cpu의 utilization이 급격히 떨어진다. 그러면 os는 utilization이 떨어졌으므로 다른 C도 가져오면 utilization이 또 떨어지고, 악순환이 반복된다.
 
+![35](https://user-images.githubusercontent.com/29851990/147377666-027a08ec-e64d-4a7c-8a50-19aa6b640abc.png)
+
+<br><br>
 ### Page Replacement
  - victim : frame이 가득 차있어서 쫓겨나야되는 애
  - page replacement : 누굴 쫓아낼것이냐
