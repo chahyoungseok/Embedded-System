@@ -568,7 +568,7 @@ real-time process execution
 8~10 : 아무나<br>
 
 r : 읽기권한<br>
-w : 쓰기권한0<br>
+w : 쓰기권한<br>
 x : 실행권한
 
 <br><br><br><br>
@@ -613,7 +613,7 @@ Critical Section Problem
 
 <br><br>
 
-//사진
+![31](https://user-images.githubusercontent.com/29851990/147375817-5fd03307-47ff-4b7f-b577-d14873b874a0.PNG)
 <br>
 Peterson's Solution
  - P0와 P1이 있을 때 저 flag와 turn을 공유한다.
