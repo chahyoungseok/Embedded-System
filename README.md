@@ -40,7 +40,7 @@ OS
 
 ### Computer System Organization
 
-//사진
+![7](https://user-images.githubusercontent.com/29851990/147375068-8cb0372e-a890-4f7d-b765-1f609c781441.PNG)
 
 <br>
 System bus : 시스템들을 연결하는 애들<br>
