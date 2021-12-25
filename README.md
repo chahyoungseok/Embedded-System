@@ -729,3 +729,250 @@ Deadlock이 걸리지 않게 하기위해 예방대책
 
 <br><br><br><br>
 ## Day 8
+
+### File
+ 
+ 연관된 정보들의 집합을 만들고, 이름을 붙인 것<br>
+ 전원을 꺼도 여전히 저장이 되 있는 애들<br>
+ 더 작게 나눌 수 없는 저장단위
+ 모든 파일은 Directory안에 있어야한다.
+ 
+ <br>
+ 
+ File Open
+  - Directroy를 뒤져서 파일이 어디있는지 찾아보고, 그에대한 정보를 메모리에 올리는 과정. (CPU는 모든 정보가 메모리에 있어야함.)
+ 
+ <br>
+ 
+ File Close
+  - 메모리에 올라와있는 Content를 삭제 후 다시 Device에 저장하는 과정. (Read만 한거면 메모리에서 삭제를 안해도 된다.)
+
+<br>
+
+ File System
+  - 스토리지에 있는 어떤 물리적인 내용을 우리가 보기좋게 논리적으로 바꿔주는 UI이다.
+  - FCB를 통해서 전반적으로 파일시스템을 관리한다.
+  - 실제로 어디에 써 이런 구체적인 명령은 Device driver가 한다.
+
+<br>
+
+ File System Layout
+  - User 관리 : application programs
+  - Kernel 관리 : logical file system | file organization module | basic file system  | I/O control
+  - Device 관리 : devices
+
+<br>
+
+ application programs 
+  - file open과 같은 c코드
+ 
+ <br>
+ 
+ logical file system 
+  - directory operation을 통해서 directory를 뒤져 파일을 찾고, 그것을 FCB같은걸로 만들어서 메모리에 올려놓는다. 
+  - 파일이있냐 없냐, 퍼미션이 뭐냐 등등 찾는다.
+
+ <br>
+ 
+ file organization module 
+  - 찾는 파일의 이름과 meta-data등을 알았으면 그 logical한 정보, 블록들을 physical하게 바꿔주는 layer.
+  - physical한 블록의 위치를 매핑해주는 테이블이 있다.
+
+<br>
+
+ basic file system 
+  - 실제로 device에 몇 번 블록을 가져오라 하는 곳. 
+  - logical한 몇 번째 블록은 사실 physical한 몇 번째 블록이라고 알려주고, 그러면 physical에 대응되는 블록의 정보를 불러오라고 Device driver에게 명령을한다.
+
+<br>
+
+<br><br>
+### In-Memory File System Structures
+
+System-wide open-file table
+ - OS가 생각하기에 누군가 특정파일을 열었다면 그 정보가 메모리에 있어야한다 또는 저 파일을 접근하려면 어떤 FCB를 가지고 있어야된다 라는 정보를 가지고 있는 것.
+
+<br>
+
+Per-process open-file table 
+ - 프로세스 입장에서 내가 파일을 열었다면 그 파일은 결국은 System-wide open-file table 어딘가에 있어야하므로 System-wide open-file table의 어떤 열린파일을 참조하고 있는지 가르키는 간접적인 포인터 테이블.
+
+<br>
+
+File System Usage
+ 1. System-wide open-file table를 뒤졌는데 내가 찾아야하는 File name이 있다면 수행하고있는 프로세스의 Per-process file entry를 찾은곳에 포인팅을 시켜놓는다.
+ 2. System-wide open-file table를 뒤졌는데 내가 찾아야하는 File name이 없다면 Directory Structure를 가서 저 파일을 뒤진 다음 FCB를 만들고, 그것을 메모리에 올리고, System-wide open-file table에 등록을 하고, 1의 과정을 수행한다. open file counter도 하나 증가한다.
+ 3. 파일을 닫으면 counter가 1 낮아지고, Per-process file entry가 사라지고, 링크도 끊어지고, counter가 0가되면 System-wide open-file table에서 방출이 된다.
+ 4. 사용하는 장점 : 속도의 문제
+
+<br><br>
+### Files allocations
+
+Continuous allocations
+ - 장점 : 간단하고, Directory도 시작과 끝 주소를 알면되므로 깔끔함.
+ - 단점 : 연속적으로 저장해야하므로 연속된 빈공간을 찾아야한다.<br>데이터파일은 늘어나므로 낑겨놓으면 늘어날 수 없다.<br>외부단편화 : 블록이 5개가 들어가있는데 중간에 데이터가 들어가있어서 연속된건 못 들어가는 상황
+
+<br>
+
+LinkedList allocations
+ - Linked List를 사용하면 외부단편화 문제는 해결된다.
+ - 문제점 : 조금 커진다, 큰 리스트면 탐색하는데 시간이 너무 오래걸린다.
+
+<br>
+
+FAT allocations
+ - 포인터들을 따로 테이블로 분리해놓은 것.
+ - 이러면 FAT이라는 구조체만 사용하면 조금 빨라진다.
+ - 문제점 : 테이블 공간이 만만치않음.
+
+<br>
+
+Indexed allocations method
+ - 몇 번째 블록이 어디있는지에 대한 인덱스를 가지고 있다.
+ - 5번 블록을 찾고 있다 -> 저걸 25번을 가면된다.
+ - 문제점 : 하나의 블록안에 저장할 수 있는 인덱스의 개수 제한<br>블록을 실제데이터를 안쓰고 인덱스로 하나 쓴다는 점.
+
+<br><br>
+## Links(Hard, Symbolic)
+
+HardLink
+ - Directory는 단순 File만 가지고 있는 것이 아니라 File과 INode를 연결해주는 링크에 대한 정보도 가지고 있다.
+ - Hard Link는 파일하나 당 하나만 만들 수 있지만 INode 입장에서는 개수제한이 없다.
+ - 단순히 말해서 그냥 링크다. A를 통해 값을 바꿨다면 B를 통해 봐도 바뀌어있다.
+ - Hard Link는 Link Count가 있고, unLink 기능도 있다.
+ - 파일에 물려있는 Link가 하나도 없을 때 파일은 지워진다.
+
+<br>
+
+Symbolic Link
+ - 윈도우의 바로가기처럼 폴더를 타고타고 들어가지 않아도 바로간다.
+ - os는 신경안쓰고 우리끼리 정해놓는 개념
+ - 이미 있는 링크를 가르키는 개념
+ - 엄연히 다른 파일이기에 INode가 생김
+ - INode가 가르키는게 file1이라고 가정할 때, file1이 없어지면 에러를 낸다.
+
+<br>
+
+copy와 HardLink 차이점 
+ - Hard Link는 해당 INode에 링크를 하나 더 연결한 것이다.(링크가 걸려있는 다른 파일이 바꾸면 내 파일도 바뀜) 
+ - copy는 파일과 Link와 INode까지 복사(복사 해온 파일이 어떻게되든 난 안 바뀐다)를 해온 것이다.
+ - remove와 unlink의 차이도 위와 같다.
+
+
+<br><br><br><br>
+## Day 9
+
+### Address Binding
+MMU가 logical Address를 physical Address로 변환하는 것을 언제 변환하는지<br>
+각각의 프로세스가 가지고 있는 Memory영역은 logical Address이다.
+
+<br>
+
+Types of Address Binding
+ - Load time : 프로그램이 메모리에 위치된 곳을 기점으로 얼마만큼 떨어져있냐로 알려준다. (상대적으로 얼마나 벗어나 있는지)
+ - ex) base + 0x~~
+
+<br>
+
+프로그램이 Load될 때 메모리주소를 준다고는 했지만 현실은 실제프로그램이 저 영역을 접근할 때, 즉 매번 명령어를 통해서 Translation할 때 마다 변환해서 준다. 이유는?
+ - 프로그램은 시간에 따라서 HDD로 내려갔다가 올라오기도 하므로 주소는 계속 바뀐다. 그러므로 Loading time에는 결정할 수 없다.
+
+
+<br>
+
+relocation register
+ - 프로그램을 메모리에 위치시킨 곳을 Base라고 하는데 (위의 ex참고) 그것을 결정시켜주는 애
+
+<br><br>
+### Dynamic Storage Allocation
+
+메모리에 hole이 생길 때, 다음 process가 수행할 곳을 찾는 방법.
+
+First fit
+ - 발견한 memory hole중 가장 첫 번째로 발견한 hole에 넣는다.
+
+Best-fit 
+ - 모든 hole의 크기를 다 계산해서 집어넣는 process보다 크지만 그중에 가장 작은애한테 집어넣는방법.
+
+Worst-ft 
+ - 제일 빈공간이 큰곳에 집어넣는방법.
+
+<br>
+
+문제점 
+ - External Fragmentation (외부 단편화) : 전체용량은 충분하지만 연속적인 공간이 부족하기 때문에 할당을 못하는 경우.
+
+<br>
+
+결론
+ - 이론상으로도 실제 업무상으로도 Worst-fit이 External Fragmentation 문제를 줄인다.
+ - 이런게 생기는 가장 근본적인 원인은 Contiguous Memory Allocation이다. 연속적으로 메모리를 할당하니까 저런문제가 안생길 수 가 없다.
+ - Paging 기법 : 해결방안은 process를 잘라서 연속적이지 않게 잘라서 빈 공간에 채워 넣으면 된다. (잘린걸 Page라고 한다.)
+
+<br>
+
+### Paging
+
+모든 프로그램을 같은 Page단위로 나눈다. (이제부터는 연속성이 의미가 없다.)<br>
+page에서 Frame으로 넘어가도 page의 최소단위는 유지해서 메모리에 넣어주자.<br>
+page table은 process마다 있어야한다.
+
+<br>
+
+page table 
+ - 나눈 page들의 주소와 대응하는 Frame 주소를 써놓은 page table이 생긴다. 
+
+page 
+ - logical address에서의 관점
+
+frame 
+ - physical address에서 본 page (메모리 관점)
+
+<br><br>
+### Address Translation Scheme 
+주소를 logical Address에서 physical Address로 변환해주는 개념.
+
+<br>
+
+offset 
+ - page 시작주소로부터 해당명령어는 얼마나 떨어져있다를 나타내는 상대값
+
+<br>
+
+Address Translation Scheme을 할 때 page에 모든 것을 참여시키는게 아니라 page offset을 제외하고, logical address를 가르키는 주소같은 것만 Address Translation을 참여시킨다.<br>
+2부분으로 나눠서 page offset은 그대로 전달을하고, 나머지 부분만 Translation을 해서 보낸다.
+
+![1](https://user-images.githubusercontent.com/29851990/147377183-f25e5407-5f49-40b6-a135-95720df05b5e.PNG)
+
+<br>
+
+메모리가 딱 2bit만 저장할 수 있는데 그 메모리를 접근하기위해서 몇 bit 의 address bit이 있어야할까? 
+ - 1bit만 있으면 된다. -> log2(n) bit만 있으면 된다.
+ - 내가 address를 nbit를 구성해놓으면 메모리는 2의 n개만큼 구성해야한다.
+ - 2의 10승 1Kbyte, 2의 20승 2Mbyte, 2의 30승 1Gbyte
+
+page 4byte이고 physical memory가 32byte이므로 8frame 
+logical memory는 16byte -> 실제 컴퓨터에는 32byte 메모리가 꽂혀있는데 프로그래머한테는 마치 프로세서 하나는 16byte까지만 쓸수 있다고 알려주는 것. (프로그래머 입장에서는 page가 4개)
+
+<br>
+
+![2](https://user-images.githubusercontent.com/29851990/147377341-c2f09554-63a5-4206-89a9-7c9f7c799229.PNG)
+<br>
+page table = {5, 6, 1, 2};
+
+위의 그림에서 logical memory가 page table을 타고, physical memory로 가는거 직접해보자.<br>
+page table을 타고 5번 Frame으로 가면 첫 번째 시작번지는 20이다.<br>
+logical[0]의 physical address => 20<br>
+
+저 그림에서의 page table에서 1:6을 1:0로 바꿔버렸다.<br>
+그러면 logical memory에서 1번 page의 5번주소 f는 physical address의 몇 번째 주소로 옮겨지는가? 1번이다.<br>
+
+ex) page가 4byte라면 이것을 표현하기 위해서는 2bit의 공간이 필요하다. 이 2bit를 page offset에 표현하고, page number는 그냥 쓰면 physical address에 계산할 때, Frame Number * 4 + page offset을 하면 된다.
+
+문제점 
+ - Paging을 써서 External Fragmentation은 해결 되었지만, Internal Fragmentation이 발생한다.
+ - 내 프로그램이 4KB의 배수가 아니라면, 13KB짜리 프로그램을 만들면 실제 할당된 16KB에서 3KB를 날린다.
+ - 또한, 대형 프로그램 같은 경우에는 page size는 커져야한다.
+
+<br><br><br><br>
+## Day 10
