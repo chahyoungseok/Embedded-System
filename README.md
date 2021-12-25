@@ -131,7 +131,7 @@ stack (사이즈가 유동적이다.)
 
 <br><br>
 ### Process States
-//사진
+![25](https://user-images.githubusercontent.com/29851990/147375309-2a74dde4-df5d-4576-867c-2beba1734d87.jpg)
 <br>
 New
  - 프로세스가 만들어질 때
