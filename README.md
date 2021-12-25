@@ -115,7 +115,7 @@ Multitasking
 
 <br><br>
 ### Memory Layout
-//사진
+![24](https://user-images.githubusercontent.com/29851990/147375285-10fd3250-7242-49ab-a1fc-b50cab9161c5.PNG)
 <br>
 text (사이즈가 변하지않는다.)
  - 코드의 구조 ex) 명령어, 어셈블러, 기계어
