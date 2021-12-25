@@ -322,14 +322,14 @@ loopback 만드는 이유 : 인풋과 아웃풋을 분리하고, 인터페이스
 Questions : LINE A에서 출력되는 내용을 설명하라.<br>
 Answer : 출력하는 부분은 부모프로세스에게만 있으므로 답은 5이다.
 <br>
-//사진
+![33](https://user-images.githubusercontent.com/29851990/147375569-7c76e614-08cc-416d-a989-70ebcce0a18d.PNG)
 
 <br><br>
 
 Questions : 최초의 부모 프로세스를 포함하여 사진에 표시된 프로그램에 의해 몇 개의 프로세스가 생성되는가?<br>
 Answer : 한번 fork()를 하면 프로세스가 2개가 된다. 2^3 이므로 답은 8개이다.
 <br>
-//사진
+![34](https://user-images.githubusercontent.com/29851990/147375570-f0659d7e-cf88-4a36-a963-0d06f5bfe42d.PNG)
 
 <br><br>
 ### Thread
