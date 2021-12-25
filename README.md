@@ -691,7 +691,7 @@ deadlock은 아래 4가지조건이 만족해야 발생한다.
 <br><br>
 ### Cycle
 
-//사진
+![33](https://user-images.githubusercontent.com/29851990/147376013-e7efb873-3495-46ac-bc85-d951b6a5d5bb.PNG)
 
 cycle인지 no cycle이냐도 구분을한다.<br>
 예를들면 저 R3가 T1을 가르키면 cycle이 된다.<br>
