@@ -976,3 +976,107 @@ ex) page가 4byte라면 이것을 표현하기 위해서는 2bit의 공간이 �
 
 <br><br><br><br>
 ## Day 10
+
+### Memory Protection
+
+모든 프로세스는 자신만의 page table을 가져야한다. (프로세스마다 공유 x)<br>
+CPU 입장에서는 page table은 그냥 하나의 메모리에 불과하다.<br>
+그렇다면 page table은 어디에 저장이 될까? Page-table base register(PTBR) 에 있다. (하드웨어 레지스터)<br>
+또한 수행되고있는 프로세스가 바뀌면 페이지 테이블도 바뀌어야 한다. ex) Context Switching
+
+<br>
+
+TLB
+ - 순수 H/W인데 physical adddress를 찾는 과정이 생각보다 오래걸려서 만들었다.
+ - 앞이 page number 뒤가 Frame number인 구조체를 만들어서 ~번 페이지는 프레임 ~번에있음 이렇게 H/W로 구현한다.
+ - TLB에 가서 원하는 page number를 찾고 없다면 page table을 찾아간다.
+ - Context Switching을 하면 TLB도 싹 다 비우고, 다시 채워야한다.
+ - 따라서 TLB에 자주 쓰이는 page table의 정보를 가져다놓는다.
+ - cpu입장에서는 TLB에 있는 정보를 가져오는 것이 훨씬 빠르다.
+ - TLB에 내가 원하는 정보가 있으면 hit이고, TLB에 내가 원하는 정보가 없으면 miss이고, page table을 간다.
+ - hope TLB hit rate : 99.n% 정도는 되어야 쓸만하다. (TLB hit와 page fault는 시간차이가 심하다.)
+ - TLB miss가 나서 page table에서 정보를 찾으면 그 값을 가져와서 TLB에 저장한다.
+
+<br>
+
+TLB와 page table의 차이
+ - page table은 모든 페이지에 대한 정보를 다 가지고 있어야한다.
+ - TLB는 page table정도의 1/100, 1/1000 정도만 가지고 있어도 된다.
+ - page table은 순서대로 n번째 entry를 찾아야하면 n번째로가서 frame을 찾으면된다.
+ - TLB는 page number와 frame number가 둘 다 있어야한다.
+
+<br>
+
+Shared Pages
+ - OS에서 이건 여러 프로세스가 공유할 수 있다고 선언해주면 공유시켜준다. 
+ - virtual address입장에서는 내거를 쓰는 것 같지만 cpu입장에서는 메모리 한곳에있는걸 다 사용하는 것으로 보인다.
+ - 원래는 서로 다른 프로세스의 page table에 같은 frame number가 있으면 안된다. 근데 Shared page를 통해서 가능하게 한다.
+ - 다만, 읽기 전용이다.
+
+<br><br>
+### Demand Paging
+
+필요한 page만 메모리에 올려주겠다.<br>
+vaild-invaild bit에 v이면 메모리에 있으므로 유효하니까 찾아가는데, i이면 안찾아간다.<br>
+내가 필요하지만 메모리에 없어 invaild여서 찾아가지 못하는 것을 page fault 라고 한다.<br>
+MMU에서 Address translation할 때, page가 메모리에 없으면 "page fault"
+
+<br>
+
+Page fault
+ - page fault가 발생하면 trap을 한다. (OS에게 알린다.)
+ - OS는 그 page가 어디있는지 찾고, physical memory에서 새로운 page가 들어갈 비어있는 frame을 찾는다. 거기에 page를 load한다.
+ - page table의 flag bit도 갱신해준다.
+ - 이 과정에서 page를 들여보낼 때, 비어있는 frame이 없으면 누군가를 쫓아내야한다. 근데 그냥 버릴 수는 없고 어떡해해야할까? storage에 보낸다.
+
+<br>
+
+page out
+ - 메모리에 있던 page가 storage에 가는 것.
+
+page in 
+ - storage에 있던 page가 메모리에 가는 것.
+
+<br>
+
+Copy on Write
+ - fork()를 했을 때, 가상메모리 공간까지 복사가 되는데, 똑같은 부분이 존재하므로 그 부분을 공유하게 하면 좋다.
+ - 하지만 공유하게 된다면 문제가 많아지는데, 임시로 공유메모리를 만들고, 만일 write를 하게 된다면 복사해서 하나 만든 뒤 그걸 토대로 page table을 다르게 가져가게 한다.
+
+<br>
+
+valid bit가 0인 애들은 왜 TLB에 존재할까?
+ - Context Switching할 때, 4byte짜리 number들을 갈아치우는 것 보다 1bit짜리 valid bit을 0으로 만드는게 쉽다.
+
+<br>
+
+![35](https://user-images.githubusercontent.com/29851990/147377666-027a08ec-e64d-4a7c-8a50-19aa6b640abc.png)
+<br>
+Thrashing
+ - OS는 프로그램을 10개 수행하면 동시에 시작시키지 않는다.
+ - CPU의 utilization을 보고, 못한다 싶으면 어떠한 queue에 넣어놓는다.
+ - 저 그래프의 x,y는 비례관계를 갖는다.
+ - A,B의 중요 페이지 수가 4개라고 할 때, 총 올려놓을 수 있는 페이지 수를 6개라고 하자. A 혼자 올려놓고 쓰면 60%정도의 utilization이 나왔다고 하면 B가 들어오는 순간 B도 4개의 페이지를 올려놔야하므로 A가 차지하고있던 2개의 페이지공간을 줬다 뺐다 핑퐁을 치게된다.
+ - 그러면서 계속 page fault가 나서 cpu의 utilization이 급격히 떨어진다. 그러면 os는 utilization이 떨어졌으므로 다른 C도 가져오면 utilization이 또 떨어지고, 악순환이 반복된다.
+
+### Page Replacement
+ - victim : frame이 가득 차있어서 쫓겨나야되는 애
+ - page replacement : 누굴 쫓아낼것이냐
+ - 최대한 page fault가 적게 나오는 victim을 쫓아내야한다.
+ - 아래는 victim을 정하는 알고리즘이다.
+
+<br>
+
+Optimal Algorithm
+ - 가장 늦게 사용될 애를 쫓아내는 알고리즘
+
+FIFO (First-In-First-Out)
+ - 가장 오래된 애를 쫓아내는 알고리즘
+
+LRU (Least Recently Used)
+ - 가장 예전에 사용되었던 애를 쫓아내는 알고리즘
+ - FIFO랑 다른점은 priority가 달라지는 것.
+
+Belady's Anomaly
+ - 줄줄이 miss가 발생하는 문제는 자주발생한다.
+ - 프로그램은 무언가를 루프해서 돌기 때문에 “한번 수행된 애는 또 수행될 가능성이 높다” 라는걸 인지하고 만들어야한다.4
